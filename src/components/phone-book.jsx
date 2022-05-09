@@ -37,7 +37,7 @@ export class PhoneBook extends Component{
         }
         let foo = this.state.contacts.some(contact =>  contact.name.toLocaleLowerCase() === name.toLocaleLowerCase() );
         if (foo) {
-            alert(`${name} is anlready in contacts`);
+            alert(`${name} is anlready in contacts `);
             return
         }
         arr.push(objContact);
