@@ -1,12 +1,9 @@
 import React, { Component } from "react"
-//import { FormName } from "./forma-name"
-import { Personlist } from "./person-list"
-//import { AddButton } from "./add-button"
+import { Personlist } from "./person-list/person-list"
 import { nanoid } from 'nanoid'
-//import { FormNumber } from './form-number'
-//import { Form1} from "./form"
 import { Filter } from "./filter"
-import {Form} from "./Forma"
+import { Form } from "./Forma"
+import PropTypes from "prop-types";
 export class PhoneBook extends Component{
     state = {
         contacts: [
@@ -15,12 +12,11 @@ export class PhoneBook extends Component{
             {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
             { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
         ],
-        filter: 'fkgyu'
+        filter: ''
     }
     
     hendelChangeInputFilter = (event) => {
         const arr=[]
-        console.log(this.state)
         this.setState({ filter: event.currentTarget.value })
         for (let i = 0; i < this.state.contacts.length; i += 1)
         {
@@ -29,7 +25,6 @@ export class PhoneBook extends Component{
                 arr.push(this.state.contacts[i]);
             }
         }
-        console.log("arr", arr)
         return arr;
         
     }
@@ -40,27 +35,42 @@ export class PhoneBook extends Component{
             id: nanoid(),
             number:number
         }
+        let foo = this.state.contacts.some(contact =>  contact.name.toLocaleLowerCase() === name.toLocaleLowerCase() );
+        if (foo) {
+            alert(`${name} is anlready in contacts`);
+            return
+        }
         arr.push(objContact);
-        // this.setState(this.state.contacts.push(objContact))
         this.setState({contacts:arr})
-        console.log("add")
     }
     FilterArr() {
         return this.state.contacts.filter(contact=>contact.name.toLocaleLowerCase().includes(this.state.filter.toLocaleLowerCase()))
     }
+    deleteContact = (id) => {
+        return () => {
+            const newArr=this.state.contacts.filter(contact => {
+                if (contact.id !== id) {
+                    return contact
+                }
+            })
+            this.setState({ contacts: newArr });
+
+        }
+    }
     
     render() {
-        // console.log(this.state.contacts)
-        // const newArr=this.state.contacts.filter(contact=>contact.name.toLocaleLowerCase().includes(this.state.filter.toLocaleLowerCase()))
+       
         return <div>
             <h1>Phonebook</h1>
             <Form onSubmit={this.formSubmit }/>
             
             <h2>Contacts</h2>
             <Filter value={this.state.filter} func={this.hendelChangeInputFilter} contacts={this.state.contacts}/>
-            <Personlist persons={ this.FilterArr()}/></div>
+            <Personlist persons={this.FilterArr()} deleteContact={ this.deleteContact}/></div>
         
         
         
     }
 }
+
+

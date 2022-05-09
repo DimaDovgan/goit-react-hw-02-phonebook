@@ -1,5 +1,6 @@
 import React, { Component } from "react"
-
+import styles from "./style-phonebook.module.css"
+import PropTypes from "prop-types";
 export class Form extends Component{
     state = {
         name: '',
@@ -28,8 +29,9 @@ export class Form extends Component{
     
     render() {
         const {name,number}=this.state
-        return <form onSubmit={this.addPerson}>
-        <label>Name<input
+        return <form onSubmit={this.addPerson} className={styles.forma}>
+            <label className={styles.label}>Name<input
+                className={styles.input}
         type="text"
         name="name"
         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -37,8 +39,9 @@ export class Form extends Component{
         required
         value={name}
                 onChange={this.hendelChangeName} /></label>
-            <label>Number
-        <input
+            <label className={styles.label}>Number
+                <input
+                    className={styles.input}
         type="tel"
         name="number"
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -47,7 +50,11 @@ export class Form extends Component{
         value={number}
         onChange={this.hendelChangeNumber}
         /></label>
-        <button type="submit" >add</button>
+        <button type="submit" className={styles.button} >add</button>
       </form>
     }
+}
+Form.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    
 }
